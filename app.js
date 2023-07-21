@@ -7,8 +7,10 @@ const user = require("./Routes/userRoutes");
 const score = require("./Routes/scoreRoutes");
 const passages = require("./Routes/passagesRoutes");
 const lobby = require("./Routes/lobbyRoutes");
+const { LobbySockets } = require("./sockets/sockets");
+const http = require("http");
 
-
+// Config
 dotenv.config({
     path: "./Config/config.env",
 });
@@ -45,6 +47,17 @@ app.get("/", (req, res) =>
     )
 );
 
-app.listen(process.env.PORT, () => {
-    console.log(`Server runs on port ${process.env.PORT}`);
+app.listen(process.env.PORT || 4000, () => {
+    console.log(`Server is UP on PORT ${process.env.PORT}`)
 });
+
+const httpServer = http.createServer(app);
+const server = httpServer.listen(5000);
+
+const io = require("socket.io")(server, {
+    cors: {
+        origin: "*",
+    },
+});
+
+LobbySockets(io);
