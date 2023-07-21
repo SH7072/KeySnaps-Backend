@@ -1,7 +1,11 @@
 const dotenv = require("dotenv");
 const express = require("express");
 const cors = require("cors");
-const user=require("./Routes/userRoutes");
+
+// Routes
+const user = require("./Routes/userRoutes");
+const score = require("./Routes/scoreRoutes");
+const passages = require("./Routes/passagesRoutes");
 
 
 dotenv.config({
@@ -37,11 +41,13 @@ app.use((error, req, res, next) => {
 
 // adding Routes
 app.use("/user", user);
+app.use("/score", score);
+app.use("/passages", passages);
 
 
 app.get("/", (req, res) =>
     res.send(
-        `<h1>Hello From Server</h1>`
+        `<h1>Hello From Server </h1>`
     )
 );
 
