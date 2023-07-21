@@ -95,6 +95,12 @@ exports.getUserInfo = async (req, res, next) => {
         const accuracy = scores.reduce((total, score) => total + score.accuracy, 0) / scores.length;
         const speed = scores.reduce((total, score) => total + score.speed, 0) / scores.length;
         const totalTime = scores.reduce((total, score) => total + score.testDuration, 0);
+
+        user.avgSpeed = speed;
+        user.overallAccuracy = accuracy;
+        user.totalTime = totalTime;
+        await user.save();
+        
         res.status(200).json({
             message: "User Information",
             accuracy: accuracy,
