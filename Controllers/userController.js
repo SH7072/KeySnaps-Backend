@@ -60,7 +60,7 @@ exports.login = async (req, res, next) => {
             throw error;
         }
         const token = signToken({
-            user_id: user._id,
+            userId: user._id,
         });
         res.status(200).json({
             message: 'user is loggedIn',

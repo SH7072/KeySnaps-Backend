@@ -23,28 +23,28 @@ const userSchema = new mongoose.Schema({
         required: true,
     },
     scores:
-    [
-        {
-            score_id:{
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "Score",
-                // required: true,
+        [
+            {
+                score_id: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: "Score",
+                    required: true,
+                }
             }
-        }
-    ],
-    avgSpeed:{
+        ],
+    avgSpeed: {
         type: Number,
         default: 0,
     },
-    
-    overallAccuracy:{
+
+    overallAccuracy: {
         type: Number,
-        default:0,
+        default: 0,
         min: 0,
         max: 100,
     },
     // Storing time in seconds
-    totalTime:{
+    totalTime: {
         type: Number,
         default: 0,
     }

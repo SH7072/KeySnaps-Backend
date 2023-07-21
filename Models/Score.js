@@ -12,7 +12,7 @@ const scoreSchema = new mongoose.Schema({
         min: 0,
         max: 100,
     },
-    user_id: {
+    userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
     },
