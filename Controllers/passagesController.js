@@ -11,7 +11,7 @@ exports.getShortParagraph = async (req, res, next) => {
         const response = await fetch(url);
         const body = await response.text();
 
-        console.log(body);
+        // console.log(body);
 
         res.status(200).json({
             message: "Short Paragraph",
@@ -36,7 +36,7 @@ exports.getMediumParagraph = async (req, res, next) => {
         const response = await fetch(url);
         const body = await response.text();
 
-        console.log(body);
+        // console.log(body);
 
         res.status(200).json({
             message: "Medium Paragraph",
@@ -61,7 +61,7 @@ exports.getLongParagraph = async (req, res, next) => {
         const response = await fetch(url);
         const body = await response.text();
 
-        console.log(body);
+        // console.log(body);
 
         res.status(200).json({
             message: "Long Paragraph",

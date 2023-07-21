@@ -34,7 +34,7 @@ app.use(express.urlencoded({ extended: true }));
 // adding Routes
 app.use("/user", user);
 app.use("/score", score);
-app.use("/passages", passages);
+app.use("/paragraph", passages);
 
 
 app.get("/", (req, res) =>

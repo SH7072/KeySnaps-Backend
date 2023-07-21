@@ -65,6 +65,7 @@ exports.login = async (req, res, next) => {
         res.status(200).json({
             message: 'user is loggedIn',
             token: token,
+            username: user.name,
             userId: user._id,
         });
     }
@@ -100,7 +101,7 @@ exports.getUserInfo = async (req, res, next) => {
         user.overallAccuracy = accuracy;
         user.totalTime = totalTime;
         await user.save();
-        
+
         res.status(200).json({
             message: "User Information",
             accuracy: accuracy,
