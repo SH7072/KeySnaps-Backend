@@ -6,6 +6,7 @@ const cors = require("cors");
 const user = require("./Routes/userRoutes");
 const score = require("./Routes/scoreRoutes");
 const passages = require("./Routes/passagesRoutes");
+const lobby = require("./Routes/lobbyRoutes");
 
 
 dotenv.config({
@@ -35,6 +36,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/user", user);
 app.use("/score", score);
 app.use("/paragraph", passages);
+app.use("/lobby", lobby);
 
 
 app.get("/", (req, res) =>

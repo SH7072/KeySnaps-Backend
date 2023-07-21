@@ -1,13 +1,13 @@
-const Session =require("../Models/Session");
-const User =require("../Models/User");
-const nanoid=require("nanoid-esm");
+const Session = require("../Models/Lobby");
+const User = require("../Models/User");
+const nanoid = require("nanoid-esm");
 
 exports.createLobby = async (req, res, next) => {
     try {
-        const {user_id}=req.params;
+        const { user_id } = req.params;
         const { isPublic } = req.body;
-        const user=await User.findById(user_id);
-        if(!user){
+        const user = await User.findById(user_id);
+        if (!user) {
             const error = new Error("Please Login as a valid user");
             error.statusCode = 404;
             throw error;
@@ -38,7 +38,7 @@ exports.joinLobby = async (req, res, next) => {
             error.statusCode = 404;
             throw error;
         }
-        
+
         res.status(200).json({
             message: "Session Found",
             data: session,
@@ -47,7 +47,7 @@ exports.joinLobby = async (req, res, next) => {
         console.log(error);
         if (!error.statusCode) {
             error.statusCode = 500;
-            
+
         }
         next(error);
     }

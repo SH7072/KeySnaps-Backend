@@ -50,12 +50,12 @@ exports.newScore = async (req, res, next) => {
             speed: speed,
             accuracy: accuracy,
         });
-        
+
         await newScore.save();
-        
+
         user.scores.push(newScore._id);
         await user.save();
-        
+
         res.status(200).json({
             message: "New Score Added",
             data: newScore,

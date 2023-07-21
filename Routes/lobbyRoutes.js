@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { joinLobby, createLobby, getAllPublicSessions } = require("../Controllers/sessionController");
+const { joinLobby, createLobby, getAllPublicSessions } = require("../Controllers/lobbyController");
 const { verifyToken } = require("../Config/jwt");
 
 // Create session
