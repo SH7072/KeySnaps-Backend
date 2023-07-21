@@ -93,7 +93,9 @@ exports.getUserInfo = async (req, res, next) => {
             error.statusCode = 404;
             throw error;
         }
+        console.log(user);
         const scores = user.scores;
+        console.log(scores);
         const accuracy = scores.reduce((total, score) => total + score.accuracy, 0) / scores.length;
         const speed = scores.reduce((total, score) => total + score.speed, 0) / scores.length;
         const totalTime = scores.reduce((total, score) => total + score.testDuration, 0);

@@ -64,10 +64,11 @@ exports.newScore = async (req, res, next) => {
             const error = new Error("User not found");
             error.statusCode = 404;
             throw error;
-        }
+        }   
+        
 
         const newScore = await Score.create({
-            user_id: userId,
+            userId: userId,
             testDuration: time,
             speed: speed,
             accuracy: accuracy,

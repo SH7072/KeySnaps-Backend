@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const Score = require("./Score");
+const nanoidEsm = require("nanoid-esm");
 
 const userSchema = new mongoose.Schema({
     email: {
@@ -26,11 +27,11 @@ const userSchema = new mongoose.Schema({
     scores:
         [
             {
-                score_id: {
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: "Score",
-                    required: true,
-                }
+                // score_id: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Score",
+                required: true,
+                // }
             }
         ],
     avgSpeed: {
