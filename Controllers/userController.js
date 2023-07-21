@@ -77,32 +77,7 @@ exports.login = async (req, res, next) => {
     }
 }
 
-exports.getUser = async (req, res, next) => {
 
-    try {
-
-        const { id } = req.params;
-        const user = await User.findById(id);
-
-        if (!user) {
-            const error = new Error("User not found")
-            error.statusCode = 404;
-            throw error;
-        }
-        res.status(200).json({
-            message: "user found",
-            user: user,
-        })
-    }
-    catch (err) {
-        console.log(err);
-        if (!err.statusCode) {
-            err.statusCode = 500;
-        }
-        next(err);
-    }
-
-}
 
 exports.getUserInfo = async (req, res, next) => {
     //get the current user id from request params and send it back to client side as response with all scores data
