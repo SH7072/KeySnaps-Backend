@@ -21,7 +21,7 @@ exports.signup = async (req, res, next) => {
         //     }
         //     next(err);
         // });
-        const newUser = await User.create({ name, email, password });
+        const newUser = await User.create({ username: name, email, password });
         await newUser.save();
         res.status(200).json({
             message: "User created",
@@ -65,7 +65,7 @@ exports.login = async (req, res, next) => {
         res.status(200).json({
             message: 'user is loggedIn',
             token: token,
-            username: user.name,
+            username: user.username,
             userId: user._id,
         });
     }

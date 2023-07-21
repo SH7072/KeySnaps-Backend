@@ -4,7 +4,7 @@ const nanoid = require("nanoid-esm");
 
 exports.createLobby = async (req, res, next) => {
     try {
-        const { username, isPublic } = req.body;
+        const { username, isPublic, isLoggedIn } = req.body;
         // const user = await User.findById(userId);
         // if (!user) {
         //     const error = new Error("Please Login as a valid user");
@@ -12,18 +12,48 @@ exports.createLobby = async (req, res, next) => {
         //     throw error;
         // }
 
+        console.log(username, isPublic, isLoggedIn);
+
+        let userid;
+        if (isLoggedIn === 'false' || !isLoggedIn) {
+            userid = nanoid(10);
+        }
+        else {
+            const user = await User.findOne({ username: username });
+            if (!user) {
+                const error = new Error("Please Login as a valid user");
+                error.statusCode = 404;
+                throw error;
+            }
+            else {
+                userid = user._id;
+            }
+        }
+
+        console.log(userid);
+
         const lobbyCode = nanoid(5);
         const newLobby = new Lobby({
             lobbyCode: lobbyCode,
-            users: [username],
+            users: [
+                {
+                    userId: userid,
+                    userName: username,
+                    isRegistered: false,
+                }
+            ],
             ownerName: username,
             isPublic: isPublic,
+
         });
         await newLobby.save();
 
+        console.log(newLobby);
+
         res.status(200).json({
             message: "New Lobby Created",
-            data: newLobby,
+            lobby: newLobby,
+            userid: userid,
         });
     } catch (error) {
         console.log(error);
@@ -36,7 +66,7 @@ exports.createLobby = async (req, res, next) => {
 
 exports.joinLobby = async (req, res, next) => {
     try {
-        const { username, lobbyCode } = req.body;
+        const { username, lobbyCode, isLoggedIn } = req.body;
         // console.log(username, lobbyCode);
         const lobby = await Lobby.findOne({ lobbyCode: lobbyCode });
         if (!lobby) {
@@ -45,16 +75,45 @@ exports.joinLobby = async (req, res, next) => {
             throw error;
         }
 
+        if (lobby.expired) {
+            const error = new Error("Lobby has expired");
+            error.statusCode = 404;
+            throw error;
+        }
+
+        let userid;
+        if (isLoggedIn === 'false' || !isLoggedIn) {
+            userid = nanoid(10);
+        }
+        else {
+            const user = await User.findOne({ username: username });
+            if (!user) {
+                const error = new Error("Please Login as a valid user");
+                error.statusCode = 404;
+                throw error;
+            }
+            else {
+                userid = user._id;
+            }
+        }
+
         const updatedLobby = await Lobby.findByIdAndUpdate(lobby._id,
             {
-                $push: { users: username },
+                $push: {
+                    users: {
+                        userId: userid,
+                        userName: username,
+                        isRegistered: isLoggedIn,
+                    }
+                },
             },
             { new: true });
 
 
         res.status(200).json({
             message: "Lobby Found",
-            data: updatedLobby,
+            lobby: updatedLobby,
+            userid: userid,
         });
     } catch (error) {
         console.log(error);

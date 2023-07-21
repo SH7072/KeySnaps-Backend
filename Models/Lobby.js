@@ -9,8 +9,18 @@ const lobbySchema = new mongoose.Schema({
     },
     users: [
         {
-            type: String,
-            required: true,
+            userId: {
+                type: String,
+                required: true,
+            },
+            userName: {
+                type: String,
+                required: true,
+            },
+            isRegistered: {
+                type: Boolean,
+                required: true,
+            },
         }
     ],
     ownerName: {
