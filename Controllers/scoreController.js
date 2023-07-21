@@ -8,7 +8,7 @@ function extractValues(data) {
         const username = entry.user_id.username;
         const speed = entry.speed;
         const accuracy = entry.accuracy;
-        const rank = index+1;
+        const rank = index + 1;
 
         return {
             username,
@@ -22,11 +22,11 @@ function extractValues(data) {
 
 exports.leaderBoard = async (req, res, next) => {
     try {
-        const scores = await Score.find().sort({ speed: -1 }).populate({ path: "user_id", select: "username" });
+        const scores = await Score.find().sort({ speed: -1 }).populate({ path: "userId", select: "username" });
 
         const results = extractValues(scores);
-        
-        
+
+
         res.status(200).json({
             message: "LeaderBoard",
             scores: results,
