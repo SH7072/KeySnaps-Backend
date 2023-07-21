@@ -25,7 +25,6 @@ exports.createUser = async (req, res, next) => {
         await newUser.save();
         res.status(200).json({
             message: "User created",
-            // userId: result,
             id: newUser._id,
             email: newUser.email,
         });
@@ -81,9 +80,10 @@ exports.login = async (req, res, next) => {
 exports.getUser = async (req, res, next) => {
 
     try {
+
         const { id } = req.params;
         const user = await User.findById(id);
-            
+
         if (!user) {
             const error = new Error("User not found")
             error.statusCode = 404;
@@ -91,9 +91,7 @@ exports.getUser = async (req, res, next) => {
         }
         res.status(200).json({
             message: "user found",
-            name: user.name,
-            followers: user.followers.length,
-            following: user.followings.length,
+            user: user,
         })
     }
     catch (err) {
@@ -103,5 +101,44 @@ exports.getUser = async (req, res, next) => {
         }
         next(err);
     }
+
+}
+
+exports.getUserInfo = async (req, res, next) => {
+    //get the current user id from request params and send it back to client side as response with all scores data
+    try {
+        // map through all scores for a user calculate average accuracy average speed and total time and populate all score data to the response
+
+        const { id } = req.params;
+        const user = await User.findById(id).populate('scores');
+        if (!user) {
+            const error = new Error("user not found");
+            error.statusCode = 404;
+            throw error;
+        }
+        const scores = user.scores;
+        const accuracy = scores.reduce((total, score) => total + score.accuracy, 0) / scores.length;
+        const speed = scores.reduce((total, score) => total + score.speed, 0) / scores.length;
+        const totalTime = scores.reduce((total, score) => total + score.testDuration, 0);
+        res.status(200).json({
+            message: "User Information",
+            accuracy: accuracy,
+            speed: speed,
+            totalTime: totalTime,
+            scores: scores,
+        })
+    }
+    catch (error) {
+        console.log(error);
+        if (!error.statusCode) {
+            error.statusCode = 500;
+        }
+        next(error);
+    }
+
+
+
+
+
 
 }
