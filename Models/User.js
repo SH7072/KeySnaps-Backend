@@ -1,11 +1,8 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
+const Score = require("./Score");
 
 const userSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true,
-    },
     email: {
         type: String,
         required: true,
@@ -17,13 +14,44 @@ const userSchema = new mongoose.Schema({
             },
         },
     },
+    username: {
+        type: String,
+        required: true,
+    },
     password: {
         type: String,
         required: true,
     },
+    scores:
+    [
+        {
+            score_id:{
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Score",
+                required: true,
+            }
+        }
+    ],
+    avgSpeed:{
+        type: Number,
+        default: 0,
+    },
+    
+    overallAccuracy:{
+        type: Number,
+        default:0,
+        min: 0,
+        max: 100,
+    },
+    // Storing time in seconds
+    totalTime:{
+        type: Number,
+        default: 0,
+    }
 
 });
-
+// Leader Board
+// Profile
 userSchema.methods.comparePassword = async function (password) {
     const user = this;
     const isMatch = await bcrypt.compareSync(password, user.password);
@@ -41,3 +69,4 @@ userSchema.pre("save", async function (next) {
 });
 
 module.exports = mongoose.model("User", userSchema);
+
