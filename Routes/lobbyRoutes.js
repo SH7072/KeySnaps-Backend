@@ -4,12 +4,12 @@ const { joinLobby, createLobby, getAllPublicSessions } = require("../Controllers
 const { verifyToken } = require("../Config/jwt");
 
 // Create session
-router.post("/createLobby/:user_id", verifyToken, createLobby);
+router.post("/create/", createLobby);
 
 // Join session with session code
-router.post("/joinLobby", verifyToken, joinLobby);
+router.post("/join", joinLobby);
 
 // Get all public sessions
-router.get("/getAllSessions/:id", verifyToken, getAllPublicSessions);
+router.get("/getAllSessions/:id", getAllPublicSessions);
 
 module.exports = router;

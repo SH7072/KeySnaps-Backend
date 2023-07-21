@@ -1,24 +1,28 @@
-const Session = require("../Models/Lobby");
+const Lobby = require("../Models/Lobby");
 const User = require("../Models/User");
 const nanoid = require("nanoid-esm");
 
 exports.createLobby = async (req, res, next) => {
     try {
-        const { user_id } = req.params;
-        const { isPublic } = req.body;
-        const user = await User.findById(user_id);
-        if (!user) {
-            const error = new Error("Please Login as a valid user");
-            error.statusCode = 404;
-            throw error;
-        }
+        const { username, isPublic } = req.body;
+        // const user = await User.findById(userId);
+        // if (!user) {
+        //     const error = new Error("Please Login as a valid user");
+        //     error.statusCode = 404;
+        //     throw error;
+        // }
 
-        const sessionCode = nanoid.nanoid(5);
-        const newSession = await Session.create({ user_id, sessionCode, isPublic });
-        await newSession.save();
+        const lobbyCode = nanoid.nanoid(5);
+        const newLobby = new Lobby({
+            lobbyCode: lobbyCode,
+            users: [username],
+            ownerName: username,
+            isPublic: isPublic,
+        });
+
         res.status(200).json({
-            message: "New Session Created",
-            data: newSession,
+            message: "New Lobby Created",
+            data: newLobby,
         });
     } catch (error) {
         console.log(error);
@@ -31,17 +35,24 @@ exports.createLobby = async (req, res, next) => {
 
 exports.joinLobby = async (req, res, next) => {
     try {
-        const { sessionCode } = req.body;
-        const session = await Session.findOne({ sessionCode: sessionCode });
-        if (!session) {
-            const error = new Error("Invalid Session Code ");
+        const { username, lobbyCode } = req.body;
+        const lobby = await Lobby.findOne({ lobbyCode: lobbyCode });
+        if (!lobby) {
+            const error = new Error("Invalid Lobby Code ");
             error.statusCode = 404;
             throw error;
         }
 
+        const updatedLobby = await Lobby.findByIdAndUpdate(lobby._id,
+            {
+                $push: { users: username },
+            },
+            { new: true });
+
+
         res.status(200).json({
-            message: "Session Found",
-            data: session,
+            message: "Lobby Found",
+            data: updatedLobby,
         });
     } catch (error) {
         console.log(error);

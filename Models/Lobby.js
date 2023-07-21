@@ -3,26 +3,48 @@ const bcrypt = require("bcryptjs");
 const User = require("./User");
 
 const lobbySchema = new mongoose.Schema({
-    user_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        required: true,
-    },
     lobbyCode: {
         type: String,
         required: true,
     },
-    createdAt: {
-        type: Date,
-        expires: 3600,
-        default: Date.now,
+    users: [
+        {
+            type: String,
+            required: true,
+        }
+    ],
+    ownerName: {
+        type: String,
+        required: true,
     },
-
     isPublic: {
         type: Boolean,
         required: true,
+    },
+    lobbyStats: [
+        {
+            userName: {
+                type: String,
+                required: true,
+            },
+            speed: {
+                type: Number,
+                required: true,
+            },
+            accuracy: {
+                type: Number,
+                required: true,
+            }
+        }
+    ],
+    expired: {
+        type: Boolean,
+        default: false,
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now,
     }
-
 
 }, { timestamps: true });
 

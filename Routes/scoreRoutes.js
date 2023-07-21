@@ -7,6 +7,6 @@ const router = express.Router();
 router.get("/leaderBoard", leaderBoard);
 
 //  user must be logged in
-router.post("/newScore/:user_id", verifyToken, newScore);
+router.post("/newScore/:userId", verifyToken, newScore);
 
 module.exports = router;

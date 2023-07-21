@@ -9,7 +9,7 @@ exports.leaderBoard = async (req, res, next) => {
 
         // for each score fetching user and sending user data with the score
         const leaderBoard = scores.map(async (score) => {
-            const user = await User.findById(score.user_id);
+            const user = await User.findById(score.userId);
             return {
                 name: user.name,
                 speed: score.speed,
@@ -35,9 +35,9 @@ exports.leaderBoard = async (req, res, next) => {
 exports.newScore = async (req, res, next) => {
     try {
 
-        const { user_id } = req.params;
+        const { userId } = req.params;
         const { testDuration, speed, accuracy } = req.body;
-        const user = await User.findById(user_id);
+        const user = await User.findById(userId);
         if (!user) {
             const error = new Error("User not found");
             error.statusCode = 404;
@@ -45,7 +45,7 @@ exports.newScore = async (req, res, next) => {
         }
 
         const newScore = await Score.create({
-            user_id: user_id,
+            userId: userId,
             testDuration: testDuration,
             speed: speed,
             accuracy: accuracy,
