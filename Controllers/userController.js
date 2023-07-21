@@ -21,7 +21,7 @@ exports.signup = async (req, res, next) => {
         //     }
         //     next(err);
         // });
-        const newUser = await User.create({ name, email, password });
+        const newUser = await User.create({ username:name, email, password });
         await newUser.save();
         res.status(200).json({
             message: "User created",
@@ -86,6 +86,7 @@ exports.getUserInfo = async (req, res, next) => {
         // map through all scores for a user calculate average accuracy average speed and total time and populate all score data to the response
 
         const { id } = req.params;
+        console.log(id);
         const user = await User.findById(id).populate('scores');
         if (!user) {
             const error = new Error("user not found");

@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema({
             score_id:{
                 type: mongoose.Schema.Types.ObjectId,
                 ref: "Score",
-                required: true,
+                // required: true,
             }
         }
     ],

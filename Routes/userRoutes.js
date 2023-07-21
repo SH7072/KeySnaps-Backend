@@ -10,6 +10,6 @@ router.post("/signup", signup);
 router.post("/login", login);
 
 //Get User Info with all prev tests
-router.get("/getUser/:id", verifyToken, getUserInfo);
+router.get("/getUser/:id", getUserInfo);
 
 module.exports = router;

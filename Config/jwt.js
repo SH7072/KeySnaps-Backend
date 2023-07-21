@@ -15,8 +15,9 @@ function verifyToken(req, res, next) {
         const bearer = header.split(" ");
         const token = bearer[1];
         try {
-            jwt.verify(token, process.env.JWT_SECRET);
-            req.user = jwt.verify(token, process.env.JWT_SECRET);
+           const decodedToken= jwt.verify(token, process.env.JWT_SECRET);
+            req.user = decodedToken.user;
+            
             next();
         } catch (err) {
             res.status(401).json({
