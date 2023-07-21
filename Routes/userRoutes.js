@@ -4,7 +4,7 @@ const { createUser, login, getUserInfo} = require("../Controllers/userController
 const { verifyToken } = require("../Config/jwt");
 
 // Create User {sign up}
-router.post("/createUser", createUser);
+router.post("/signup", signup);
 
 // Login
 router.post("/login", login);

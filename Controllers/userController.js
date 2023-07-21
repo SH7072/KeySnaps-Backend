@@ -2,7 +2,7 @@ const User = require('../Models/User');
 const { signToken } = require('../Config/jwt');
 
 
-exports.createUser = async (req, res, next) => {
+exports.signup = async (req, res, next) => {
     try {
         const { name, email, password } = req.body;
         console.log(name, email, password);
@@ -13,14 +13,14 @@ exports.createUser = async (req, res, next) => {
                     error.statusCode = 409;
                     throw error;
                 }
-            })
-            .catch(err => {
-                console.log(err);
-                if (!err.statusCode) {
-                    err.statusCode = 500;
-                }
-
             });
+        // .catch(err => {
+        //     // console.log(err);
+        //     if (!err.statusCode) {
+        //         err.statusCode = 500;
+        //     }
+        //     next(err);
+        // });
         const newUser = await User.create({ name, email, password });
         await newUser.save();
         res.status(200).json({
@@ -30,7 +30,7 @@ exports.createUser = async (req, res, next) => {
         });
     }
     catch (err) {
-        console.log(err);
+        console.log("Error from signup", err);
         if (!err.statusCode) {
             err.statusCode = 500;
         }
