@@ -3,23 +3,33 @@ const User = require('../Models/User');
 const { signToken } = require('../Config/jwt');
 
 // map through all the scores and prepare a list in decreasing order and send it as a response with user data
+function extractValues(data) {
+    return data.map((entry, index) => {
+        const username = entry.user_id.username;
+        const speed = entry.speed;
+        const accuracy = entry.accuracy;
+        const rank = index+1;
+
+        return {
+            username,
+            speed,
+            accuracy,
+            rank: rank
+        };
+    });
+}
+
+
 exports.leaderBoard = async (req, res, next) => {
     try {
-        const scores = await Score.find().sort({ speed: -1 });
+        const scores = await Score.find().sort({ speed: -1 }).populate({ path: "user_id", select: "username" });
 
-        // for each score fetching user and sending user data with the score
-        const leaderBoard = scores.map(async (score) => {
-            const user = await User.findById(score.userId);
-            return {
-                name: user.name,
-                speed: score.speed,
-                accuracy: score.accuracy,
-                totalTest: user.scores.length,
-            };
-        });
+        const results = extractValues(scores);
+        
+        
         res.status(200).json({
             message: "LeaderBoard",
-            data: leaderBoard,
+            scores: results,
         });
 
 
@@ -35,8 +45,17 @@ exports.leaderBoard = async (req, res, next) => {
 exports.newScore = async (req, res, next) => {
     try {
 
-        const { userId } = req.params;
-        const { testDuration, speed, accuracy } = req.body;
+
+        const { userId, time, speed, accuracy } = req.body;
+        console.log(userId);
+        console.log(time, speed, accuracy);
+
+        // const {token }=req.body;
+        // const token = signToken({
+        //     user_id: user._id,
+        // });
+        // console.log(user);
+
         const user = await User.findById(userId);
         if (!user) {
             const error = new Error("User not found");
@@ -45,15 +64,19 @@ exports.newScore = async (req, res, next) => {
         }
 
         const newScore = await Score.create({
-            userId: userId,
-            testDuration: testDuration,
+            user_id: userId,
+            testDuration: time,
             speed: speed,
             accuracy: accuracy,
         });
 
         await newScore.save();
+        // console.log(newScore);
+        // console.log(newScore.id);
 
-        user.scores.push(newScore._id);
+        // push new score id to user
+
+        user.scores.push(newScore.id);
         await user.save();
 
         res.status(200).json({
