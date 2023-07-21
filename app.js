@@ -6,7 +6,7 @@ const cors = require("cors");
 const user = require("./Routes/userRoutes");
 const score = require("./Routes/scoreRoutes");
 const passages = require("./Routes/passagesRoutes");
-
+const sessions= require("./Routes/sessionRoutes")
 
 dotenv.config({
     path: "./Config/config.env",
@@ -34,7 +34,8 @@ app.use(express.urlencoded({ extended: true }));
 // adding Routes
 app.use("/user", user);
 app.use("/score", score);
-app.use("/passages", passages);
+app.use("/paragraph", passages);
+// app.use("sessions",sessions);
 
 
 app.get("/", (req, res) =>
