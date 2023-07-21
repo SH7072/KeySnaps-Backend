@@ -5,7 +5,7 @@ const { signToken } = require('../Config/jwt');
 // map through all the scores and prepare a list in decreasing order and send it as a response with user data
 function extractValues(data) {
     return data.map((entry, index) => {
-        const username = entry.user_id.username;
+        const username = entry.userId.username;
         const speed = entry.speed;
         const accuracy = entry.accuracy;
         const rank = index + 1;
@@ -24,7 +24,10 @@ exports.leaderBoard = async (req, res, next) => {
     try {
         const scores = await Score.find().sort({ speed: -1 }).populate({ path: "userId", select: "username" });
 
+        console.log(scores);
+
         const results = extractValues(scores);
+
 
 
         res.status(200).json({
