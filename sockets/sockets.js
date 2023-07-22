@@ -13,9 +13,17 @@ exports.LobbySockets = (io) => {
             socket.to(lobbyCode).emit('game-ready', { waitTime, startTime, difficulty, paragraph });
         });
 
-        socket.on('end-game', ({ lobbyCode, userid, username }) => {
-            socket.to(lobbyCode).emit('announcement', `Game is Finished`);
+        socket.on('player-progress-info', ({ lobbyCode, userid, username, stats }) => {
+            console.log("Player Progress Info", lobbyCode, userid, username, stats);
+            socket.to(lobbyCode).emit('player-progress-report', { userid, username, stats });
         });
+
+        socket.on('player-finish-info', ({ lobbyCode, userid, username, stats }) => {
+            socket.to(lobbyCode).emit('announcement', `${username} has finished the game`);
+            socket.to(lobbyCode).emit('player-finish-report', { userid, username, stats });
+        });
+
+
 
         socket.on('start-typing', ({ lobbyCode, userid, username }) => {
             socket.to(lobbyCode).emit('announcement', `${username} has started typing`);

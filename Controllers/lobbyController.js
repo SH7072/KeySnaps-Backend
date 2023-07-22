@@ -48,7 +48,7 @@ exports.createLobby = async (req, res, next) => {
         });
         await newLobby.save();
 
-        console.log(newLobby);
+        // console.log(newLobby);
 
         res.status(200).json({
             message: "New Lobby Created",
