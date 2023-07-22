@@ -168,3 +168,30 @@ exports.getLobby = async (req, res, next) => {
     }
 }
 
+exports.expireLobby = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const lobby = await Lobby.findOne({ lobbyCode: id })
+        if (!lobby) {
+            const error = new Error("Invalid Lobby Code ");
+            error.statusCode = 404;
+            throw error;
+        }
+
+        lobby.expired = true;
+        await lobby.save();
+
+
+        res.status(200).json({
+            message: "Lobby Expired",
+            data: lobby,
+        });
+    } catch (error) {
+        console.log(error);
+        if (!error.statusCode) {
+            error.statusCode = 500;
+        }
+        next(error);
+    }
+}
+

@@ -13,6 +13,11 @@ exports.LobbySockets = (io) => {
             socket.to(lobbyCode).emit('game-ready', { waitTime, startTime, difficulty, paragraph });
         });
 
+        socket.on('end-game', ({ lobbyCode, userid, username }) => {
+            socket.to(lobbyCode).emit('announcement', `${username} has ended the game`);
+            socket.to(lobbyCode).emit('end-lobby', { lobbyCode, userid, username });
+        });
+
         socket.on('player-progress-info', ({ lobbyCode, userid, username, stats }) => {
             // console.log("Player Progress Info", lobbyCode, userid, username, stats);
             socket.to(lobbyCode).emit('player-progress-report', { userid, username, stats });
@@ -25,21 +30,13 @@ exports.LobbySockets = (io) => {
 
 
 
-        socket.on('start-typing', ({ lobbyCode, userid, username }) => {
-            socket.to(lobbyCode).emit('announcement', `${username} has started typing`);
-        });
-
-        socket.on('stop-typing', ({ lobbyCode, userid, username }) => {
-            socket.to(lobbyCode).emit('announcement', `${username} has stopped typing`);
-        });
-
         socket.on('player-left', ({ lobbyCode, userid, username }) => {
             socket.to(lobbyCode).emit('announcement', `${username} has left the Lobby`);
         });
 
-        // socket.on('disconnect', () => {
-        //     console.log("Client Disconnected", socket.id);
-        // });
+        socket.on('disconnect', () => {
+            console.log("Client Disconnected", socket.id);
+        });
 
 
 
