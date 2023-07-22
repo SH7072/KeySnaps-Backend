@@ -81,7 +81,7 @@ exports.getLongParagraph = async (req, res, next) => {
 // regx function to convert a string in all lower case without any punctuation
 function easyStr(str) {
     const lowerCase = str.toLowerCase();
-    const noPunc = lowerCase.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "");
+    const noPunc = lowerCase.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]'/g, "");
     return noPunc;
 }
 

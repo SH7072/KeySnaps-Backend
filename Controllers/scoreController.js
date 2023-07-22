@@ -19,7 +19,6 @@ function extractValues(data) {
     });
 }
 
-
 exports.leaderBoard = async (req, res, next) => {
     try {
         const scores = await Score.find().sort({ speed: -1 }).populate({ path: "userId", select: "username" });
@@ -45,6 +44,26 @@ exports.leaderBoard = async (req, res, next) => {
     }
 }
 
+// convert date data type to a string
+function convertDate(date) {
+    let dateObj = new Date(date);
+    let year = dateObj.getFullYear();
+    let month = dateObj.getMonth() + 1;
+    let day = dateObj.getDate();
+    if (day < 10) {
+        day = '0' + day;
+    }
+    
+    if (month < 10) {
+        month = `0${month}`;
+    }
+    
+    
+    return `${day}-${month}-${year}`;
+}
+
+
+
 exports.newScore = async (req, res, next) => {
     try {
 
@@ -52,26 +71,34 @@ exports.newScore = async (req, res, next) => {
         const { userId, time, speed, accuracy } = req.body;
         console.log(userId);
         console.log(time, speed, accuracy);
-
+        if(speed<0)
+        {
+            const error = new Error("Speed cannot be negative");
+            error.statusCode = 404;
+            throw error;
+        }
         // const {token }=req.body;
         // const token = signToken({
         //     user_id: user._id,
         // });
         // console.log(user);
-
         const user = await User.findById(userId);
         if (!user) {
             const error = new Error("User not found");
             error.statusCode = 404;
             throw error;
         }   
-        
+        let date=new Date();
+        // console.log(date);
+       let currDate=convertDate(date);
+        // console.log(currDate);
 
         const newScore = await Score.create({
             userId: userId,
             testDuration: time,
             speed: speed,
             accuracy: accuracy,
+            createdAt:currDate,
         });
 
         await newScore.save();

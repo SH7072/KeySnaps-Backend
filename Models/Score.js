@@ -19,6 +19,10 @@ const scoreSchema = new mongoose.Schema({
     testDuration: {
         type: Number,
         required: true,
+    },
+    createdAt:{
+        type: String,
+        required:true,
     }
 }, { timestamps: true })
 
