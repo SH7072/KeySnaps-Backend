@@ -107,6 +107,7 @@ exports.getUserInfo = async (req, res, next) => {
 
         res.status(200).json({
             message: "User Information",
+            username:user.username,
             accuracy: accuracy,
             speed: speed,
             totalTime: totalTime,
