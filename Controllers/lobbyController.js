@@ -42,7 +42,7 @@ exports.createLobby = async (req, res, next) => {
                     isRegistered: false,
                 }
             ],
-            ownerName: username,
+            ownerId: userid,
             isPublic: isPublic,
 
         });
@@ -126,10 +126,10 @@ exports.joinLobby = async (req, res, next) => {
 }
 
 
-// get all sessions which are public
-exports.getAllPublicSessions = async (req, res, next) => {
+exports.getPublicLobbies = async (req, res, next) => {
     try {
-        const sessions = await Session.find({ isPublic: true });
+        const sessions = await Lobby.find({ isPublic: true, expired: false });
+        console.log(sessions);
         res.status(200).json({
             message: "All Public Sessions",
             data: sessions,

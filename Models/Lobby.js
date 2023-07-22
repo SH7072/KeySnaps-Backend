@@ -23,7 +23,7 @@ const lobbySchema = new mongoose.Schema({
             },
         }
     ],
-    ownerName: {
+    ownerId: {
         type: String,
         required: true,
     },
