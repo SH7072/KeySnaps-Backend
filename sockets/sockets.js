@@ -14,7 +14,7 @@ exports.LobbySockets = (io) => {
         });
 
         socket.on('player-progress-info', ({ lobbyCode, userid, username, stats }) => {
-            console.log("Player Progress Info", lobbyCode, userid, username, stats);
+            // console.log("Player Progress Info", lobbyCode, userid, username, stats);
             socket.to(lobbyCode).emit('player-progress-report', { userid, username, stats });
         });
 
