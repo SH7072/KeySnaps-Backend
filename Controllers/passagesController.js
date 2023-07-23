@@ -95,9 +95,9 @@ exports.getEasyMode = async (req, res, next) => {
         const response = await fetch(url);
 
         const body = await response.text();
-        console.log(body);
+        // console.log(body);
         const ez = easyStr(body);
-        console.log(ez);
+        // console.log(ez);
 
         res.status(200).json({
             message: "Easy Mode",
