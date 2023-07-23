@@ -28,8 +28,6 @@ exports.LobbySockets = (io) => {
             socket.to(lobbyCode).emit('player-finish-report', { userid, username, stats });
         });
 
-
-
         socket.on('player-left', ({ lobbyCode, userid, username }) => {
             socket.to(lobbyCode).emit('announcement', `${username} has left the Lobby`);
         });
@@ -37,11 +35,5 @@ exports.LobbySockets = (io) => {
         socket.on('disconnect', () => {
             console.log("Client Disconnected", socket.id);
         });
-
-
-
-
-
-
     });
 };

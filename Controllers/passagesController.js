@@ -80,9 +80,10 @@ exports.getLongParagraph = async (req, res, next) => {
 
 // regx function to convert a string in all lower case without any punctuation
 function easyStr(str) {
-    const lowerCase = str.toLowerCase();
-    const noPunc = lowerCase.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]'/g, "");
-    return noPunc;
+    const lCase = str.toLowerCase();
+    const noPunc = lCase.replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^_`{|}~']/g, "");
+    const finalString = noPunc.replace(/\s{2,}/g, " ");
+    return finalString;
 }
 
 exports.getEasyMode = async (req, res, next) => {
@@ -92,9 +93,11 @@ exports.getEasyMode = async (req, res, next) => {
     try {
 
         const response = await fetch(url);
+
         const body = await response.text();
+        console.log(body);
         const ez = easyStr(body);
-        // console.log(ez);
+        console.log(ez);
 
         res.status(200).json({
             message: "Easy Mode",
@@ -111,8 +114,9 @@ exports.getEasyMode = async (req, res, next) => {
 }
 
 function medStr(str) {
-    const noPunc = str.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "");
-    return noPunc;
+    const noPunc = str.replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^_`{|}~']/g, "");
+    const finalString = noPunc.replace(/\s{2,}/g, " ");
+    return finalString;
 }
 
 exports.getMediumMode = async (req, res, next) => {
