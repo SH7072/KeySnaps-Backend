@@ -13,6 +13,6 @@ router.get("/getPublicLobbies", getPublicLobbies);
 
 router.get("/getLobby/:id", getLobby);
 
-router.get('/expireLobby/:id', expireLobby);
+// router.get('/expireLobby/:id', expireLobby);
 
 module.exports = router;

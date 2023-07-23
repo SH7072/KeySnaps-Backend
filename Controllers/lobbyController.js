@@ -12,7 +12,7 @@ exports.createLobby = async (req, res, next) => {
         //     throw error;
         // }
 
-        console.log(username, isPublic, isLoggedIn);
+        // console.log(username, isPublic, isLoggedIn);
 
         let userid;
         if (isLoggedIn === 'false' || !isLoggedIn) {
@@ -30,7 +30,7 @@ exports.createLobby = async (req, res, next) => {
             }
         }
 
-        console.log(userid);
+        // console.log(userid);
 
         const lobbyCode = nanoid(5);
         const newLobby = new Lobby({
@@ -129,7 +129,7 @@ exports.joinLobby = async (req, res, next) => {
 exports.getPublicLobbies = async (req, res, next) => {
     try {
         const sessions = await Lobby.find({ isPublic: true, expired: false });
-        console.log(sessions);
+        // console.log(sessions);
         res.status(200).json({
             message: "All Public Sessions",
             data: sessions,
@@ -153,7 +153,7 @@ exports.getLobby = async (req, res, next) => {
             throw error;
         }
 
-        console.log(lobby);
+        // console.log(lobby);
         res.status(200).json({
             message: "Lobby Found",
             data: lobby[0],
@@ -168,10 +168,9 @@ exports.getLobby = async (req, res, next) => {
     }
 }
 
-exports.expireLobby = async (req, res, next) => {
+exports.expireLobby = async ({ lobbyCode }) => {
     try {
-        const { id } = req.params;
-        const lobby = await Lobby.findOne({ lobbyCode: id })
+        const lobby = await Lobby.findOne({ lobbyCode: lobbyCode })
         if (!lobby) {
             const error = new Error("Invalid Lobby Code ");
             error.statusCode = 404;
@@ -182,16 +181,10 @@ exports.expireLobby = async (req, res, next) => {
         await lobby.save();
 
 
-        res.status(200).json({
-            message: "Lobby Expired",
-            data: lobby,
-        });
+        return { message: "Lobby Expired", status: true, lobbyCode: lobbyCode }
+
     } catch (error) {
-        console.log(error);
-        if (!error.statusCode) {
-            error.statusCode = 500;
-        }
-        next(error);
+        return { message: error.message, status: false, lobbyCode: lobbyCode };
     }
 }
 
