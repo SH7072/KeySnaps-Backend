@@ -24,4 +24,6 @@
 
 * To run the app run : ```npm start```
 
+* Add the required keys ( key specified in env.text ).
+
 * Then the website can be accessed using : ```http://localhost:3000/```
