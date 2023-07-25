@@ -52,7 +52,10 @@ app.listen(process.env.PORT || 4000, () => {
 });
 
 const httpServer = http.createServer(app);
-const server = httpServer.listen(5000);
+const server = httpServer.listen(process.env.SOCKET_PORT||5000,()=>{
+    console.log(`Socket Server is UP on PORT ${process.env.SOCKET_PORT}`)
+
+});
 
 const io = require("socket.io")(server, {
     cors: {
