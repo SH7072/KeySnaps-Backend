@@ -99,6 +99,8 @@ exports.getEasyMode = async (req, res, next) => {
         const ez = easyStr(body);
         // console.log(ez);
 
+
+
         res.status(200).json({
             message: "Easy Mode",
             data: ez,
