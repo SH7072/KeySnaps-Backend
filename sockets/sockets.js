@@ -17,8 +17,7 @@ exports.LobbySockets = (io) => {
         } else {
             console.log("New Client Connected", socket.id);
 
-            socket.on('player-joined', ({ lobbyCode, userid, username }) => {
-
+            socket.on('player-joined', ({ lobbyCode, userd, username }) => {
                 if (!lobbyAdminMap[lobbyCode]) {
                     lobbyAdminMap[lobbyCode] = socket.id;
                 }
