@@ -11,13 +11,15 @@ exports.LobbySockets = (io) => {
 
     io.on("connection", (socket) => {
 
+        console.log(socket.data, socket.time);
+
         if (socket.recovered) {
             console.log("Recovered Client Connected", socket.id);
             return;
         } else {
             console.log("New Client Connected", socket.id);
 
-            socket.on('player-joined', ({ lobbyCode, userd, username }) => {
+            socket.on('player-joined', ({ lobbyCode, userid, username }) => {
                 if (!lobbyAdminMap[lobbyCode]) {
                     lobbyAdminMap[lobbyCode] = socket.id;
                 }
